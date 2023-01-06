@@ -1,0 +1,35 @@
+<!--index.html-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Day Book</title>
+    <link rel = "stylesheet" 
+         href = "./bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel = "stylesheet"
+            href = "./index.css" />
+  </head>
+  <body>
+    <div class = "container" id = "main">
+        <h1> Welcome <strong id = "name"></strong> </h1>
+        <h2> Today's Date: <b id = "date"></b> </h2>
+
+        <br>
+        <!-- form to submit message -->
+        <form class="container" id = "message-form">
+            <div class = "form-group">
+                <label for = "message">Message</label>
+                <br>
+                <textarea class = "form-control" id = "message" rows="1" cols="50" 
+                    placeholder = "Enter your message here"></textarea>
+            </div>
+            <br>
+            <button type = "submit" class = "btn btn-primary">Submit</button>
+        </form>
+
+        <script src = "./cipher.js"></script>
+     </div>
+  </body>
+</html>
