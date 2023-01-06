@@ -1,13 +1,12 @@
-// preload.js
+const data = require('./data.mjs')
 
-// All the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
     if (element) element.innerText = text
   }
 
+    // Set the date in the view
     var date = new Date();
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -24,8 +23,8 @@ window.addEventListener('DOMContentLoaded', () => {
         initial += alphabet[Math.floor(Math.random() * alphabet.length)]
     }
     
-    // replaceText(`init`, initial)
 
+    // Make the textarea auto-resize
     const tx = document.getElementsByTagName("textarea");
     for (let i = 0; i < tx.length; i++) {
         tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
@@ -35,4 +34,20 @@ window.addEventListener('DOMContentLoaded', () => {
         // this.style.height = 0;
         this.style.height = (this.scrollHeight) + "px";
     }
+
+
+
+
+    // Get data from the form
+    const form = document.getElementById("message-form")
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
+        const message = document.getElementById("message").value;
+        const key = "key"
+        const encrypted = encrypt(key, message);
+
+        console.log(message);
+        console.log(encrypted);
+        alert("Message sent: " + message)
+    })
 })
