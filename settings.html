@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Day Book</title>
+    <link rel = "stylesheet" 
+         href = "./bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel = "stylesheet"
+            href = "./index.css" />
+  </head>
+  <body>
+    <div class = "container" id = "main">
+        <form class="container" id = "message-form">
+            <div class = "form-group">
+                <label for = "name">Name</label>
+                <br>
+                <input type = "text" class = "form-control" id = "name" name = "name" 
+                    placeholder = "Enter your name here">
+            </div>
+            <br>
+            <div class = "form-group">
+                <label for = "key">Key</label>
+                <br>
+                <input type = "text" class = "form-control" id = "key" name = "key" 
+                    placeholder = "Enter your key here">
+            </div>
+            <br>
+            <button type = "submit" class = "btn btn-primary">Save</button>
+        </form>
+    </div>
+  </body>
+</html>

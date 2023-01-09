@@ -20,7 +20,7 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html');
-//   mainWindow.show();
+  mainWindow.show();
 }
 
 
@@ -36,6 +36,7 @@ function createChildWindow() {
     
       // Make sure to add webPreferences with below configuration
       webPreferences: {
+        preload: path.join(__dirname, 'settings.js'),
         nodeIntegration: true,
         contextIsolation: false,
         enableRemoteModule: true,
@@ -48,6 +49,10 @@ function createChildWindow() {
     childWindow.once("ready-to-show", () => {
       childWindow.show();
     });
+
+    childWindow.on('closed', () => {
+        mainWindow.reload()
+    })
 }
 
 
