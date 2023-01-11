@@ -24,7 +24,8 @@ const createWindow = () => {
 }
 
 
-function createChildWindow() {
+let childWindow;
+function createSettingsWindow() {
     childWindow = new BrowserWindow({
       width: 600,
       height: 360,
@@ -56,14 +57,44 @@ function createChildWindow() {
 }
 
 
+let notesWindow;
+function createNotesWindow(){
+    notesWindow = new BrowserWindow({
+        width: 600,
+        height: 360,
+        icon: path.join(__dirname, 'logo.png'),
+        modal: true,
+        show: false,
+        parent: mainWindow, // Make sure to add parent window here
+        // autoHideMenuBar: true,
+      
+        // Make sure to add webPreferences with below configuration
+        webPreferences: {
+          preload: path.join(__dirname, 'notes.js'),
+          nodeIntegration: true,
+          contextIsolation: false,
+          enableRemoteModule: true,
+        },
+      });
+      
+      // Child window loads settings.html file
+      notesWindow.loadFile("notes.html");
+      
+      notesWindow.once("ready-to-show", () => {
+        notesWindow.show();
+      });
+
+    //   notesWindow.on('closed', () => {
+    //     mainWindow.reload()
+    // })
+}
+
+
+
 const template = [
     {
         label: 'File',
         submenu: [
-            {
-                label: 'Show Notes',
-                click: () => console.log('Show Notes')
-            },
             {
                 label: 'Exit',
                 click: () => app.quit()
@@ -78,6 +109,10 @@ const template = [
           },
           {
              role: 'toggledevtools'
+          },
+          {
+            label: 'Show Notes',
+            click: () => createNotesWindow()
           }
        ]
     },
@@ -87,7 +122,7 @@ const template = [
             submenu: [
                 {
                     label: 'Settings',
-                    click: () => createChildWindow()
+                    click: () => createSettingsWindow()
                 }
             ]
     }
@@ -95,7 +130,6 @@ const template = [
  
  const menu = Menu.buildFromTemplate(template)
  Menu.setApplicationMenu(menu)
-
 
 
 app.whenReady().then(() => {
