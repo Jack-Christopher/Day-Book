@@ -10,9 +10,9 @@
   "author": "Jack-Christopher",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^22.0.0"
+    "electron": "4.0.0"
   },
   "dependencies": {
-    "fs": "^0.0.1-security"
+    "bootstrap": "^5.2.3"
   }
 }
