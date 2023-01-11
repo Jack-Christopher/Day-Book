@@ -97,11 +97,19 @@ function decrypt (key, message) {
 }
 
 
-function getFullDate() {
+function getFullDate(date_=null) {
     let full_date = new Date();
-    let day = full_date.getDate();          day = day < 10 ? "0" + day : day;
-    let month = full_date.getMonth() + 1;   month = month < 10 ? "0" + month : month;
-    let year = full_date.getFullYear();
+    let day, month, year;
+    if (date_ == null) {
+        day = full_date.getDate();          // day = day < 10 ? "0" + day : day;
+        month = full_date.getMonth() + 1;   // month = month < 10 ? "0" + month : month;
+        year = full_date.getFullYear();
+        console.log(day + "/" + month + "/" + year);
+    } else {
+        day = date_.split("-")[2];
+        month = date_.split("-")[1];
+        year = date_.split("-")[0];
+    }
 
     let hour = full_date.getHours();        hour = hour < 10 ? "0" + hour : hour;
     let minute = full_date.getMinutes();    minute = minute < 10 ? "0" + minute : minute;
@@ -114,10 +122,23 @@ function getFullDate() {
 }
 
     
-function get_date_interval() {
-    dt = new Date();
+function get_date_interval(date=null) {
+    let dt = new Date();
+    if (date != null) {
+        // break date into 3 parts considering the format: dd/mm/yyyy 
+        let year = date.split("-")[0];
+        let month = date.split("-")[1];
+        let day = date.split("-")[2];
+        dt.setDate(day);
+        dt.setMonth(month - 1);
+        dt.setFullYear(year);
+        console.log("date: " + dt);
+    }
+
     start = new Date(dt.setDate(dt.getDate() - dt.getDay()));
     end = new Date(dt.setDate(dt.getDate() + 6));
+    console.log("start: " + start);
+    console.log("end: " + end);
     start = start.toLocaleDateString();
     end = end.toLocaleDateString();
     return start + " - " + end;
@@ -178,26 +199,40 @@ window.addEventListener('DOMContentLoaded', () => {
     form.addEventListener("submit", (e) => {
         e.preventDefault()
         const message = document.getElementById("message").value;
-        const encrypted = encrypt(key, message);
-        const decrypted = decrypt(key, encrypted);
+        if (message != "") {
+            var data = readFromFile("data/notes.json");
 
-        console.log("message: " + message);
-        console.log("key: " + key);
-        console.log("encrypted: " + encrypted);
-        console.log("decrypted: " + decrypted);
-        // alert("Message sent: " + message)
+            const encrypted = encrypt(key, message);
+            // const decrypted = decrypt(key, encrypted);
 
+            const date_ = e.target["date"].value;
+            console.log("inner date: " + date_);
+            if (date_ == "") {
+            // check if interval is already created
+                var interval = get_date_interval();
+                if (data[interval] == undefined) {  data[interval] = {};    }
+                data[interval][getFullDate()] = encrypted;
 
-        // check if interval is already created
-        var interval = get_date_interval();
-        var data = readFromFile("data/notes.json");
-        if (data[interval] == undefined) {
-            data[interval] = {};
-        }
-        data[interval][getFullDate()] = encrypted;
-        console.log(data);
+            } else {
+                var interval = get_date_interval(date_);
+                if (data[interval] == undefined) {  data[interval] = {};    }
+                data[interval][getFullDate(date_)] = encrypted;
+            }          
+            // console.log(data);
 
-        // write to file
-        writeToFile("data/notes.json", null, null, data);
+            // write to file
+            writeToFile("data/notes.json", null, null, data);
+
+            // alert
+            // alert("Message saved")
+
+            // clear the textarea and text input
+            // document.getElementById("message").value = "";
+            // document.getElementById("date").value = "";
+            form.reset();
+        } 
+        // else {
+        //     alert("Please write a message")
+        // }
     })
 })
