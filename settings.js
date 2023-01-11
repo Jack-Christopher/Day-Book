@@ -86,16 +86,18 @@ window.addEventListener('DOMContentLoaded', () => {
     form.addEventListener("submit", (e) => {
         e.preventDefault()
         const name = document.getElementById("name").value;
-        console.log("settings name: " + name);
+        // console.log("settings name: " + name);
         
         const key = document.getElementById("key").value;
-        console.log("settings key: " + key);
+        // console.log("settings key: " + key);
 
         if (name != "") {
             writeToFile("config/settings.json", "name", name);
         }
         if (key != "") {
             writeToFile("config/settings.json", "key", key);
-        }        
+        }
+        
+        // alert("Settings saved!");
     })
 })
